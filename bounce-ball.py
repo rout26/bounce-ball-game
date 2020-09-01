@@ -2,8 +2,15 @@ from tkinter import *
 import random
 import time
 import keyboard
+from tkinter import messagebox
+
 
 score = 0
+tk = None
+score_now = 1
+canvas = None
+
+
 class Ball:
     def __init__(self, canvas, paddle, color, outline_color):
         self.canvas = canvas
@@ -19,6 +26,20 @@ class Ball:
         self.canvas_height = self.canvas.winfo_height()
         self.canvas_width = self.canvas.winfo_width()
         self.hit_bottom = False
+
+    def draw_score(self):
+        global score
+        global canvas        
+        # canvas.create_rectangle(300, 20, 480, 40, fill='white', outline='white')
+        # canvas.create_text(400, 30, text='Your score: ' + str(score), font=('Courier', 12))
+        canvas.itemconfig(score_now, text="Your score: " + str(score))
+        
+        # canvas.pack()
+        # self.canvas.delete(yourscore)
+        
+        # self.canvas.itemconfig(yourscore, yourscore.forget())
+        # self.canvas.itemconfig(yourscore, text='Your score: '+ str(score), font=('Times', 12))
+
 
     def hit_paddle(self, pos):
         paddle_pos = self.canvas.coords(self.paddle.id)
@@ -37,12 +58,13 @@ class Ball:
         if pos[3] >= self.canvas_height:
             # Ball dont bounce if hit the bottom
             # self.y = -3
-            self.hit_bottom = True
+            exitmenu()
+            # self.hit_bottom = True
         if self.hit_paddle(pos) == True:               
             global score 
             score = score + 1 
             print(score)
-            # self.draw_score()
+            self.draw_score()
             self.y = -4
         if pos[0] <= 0:
             self.x = 3
@@ -75,27 +97,43 @@ class Paddle:
     def turn_right(self, evt):
         self.x = 5 
 
-
-
-tk = Tk()
-tk.title("Bouncing Ball Game for Prince")
-tk.resizable(0, 0)
-tk.wm_attributes("-topmost", 1)
-canvas = Canvas(tk, width=500, height=400, bd=0, highlightthickness=0)
-canvas.pack()
-tk.update()
-
-paddle = Paddle(canvas, 'cyan')
-ball = Ball(canvas, paddle, 'red', 'red')
-
-score_now = canvas.create_text(430, 20, text="Your score: " + str(score), fill = "red", font=("Arial", 14))
-
-while 1:          
-    if ball.hit_bottom == False:
-        ball.draw()
-        paddle.draw()
-        canvas.itemconfig(score_now, text="Your score: " + str(score))
-    tk.update_idletasks()
+def play():
+    
+    pass
+    
+def exitmenu():
+    global tk
+    res = messagebox.askquestion("Gave Over","Do you wanrt to play again?", icon = 'warning') 
+    if res == 'yes':
+        main()   
+    else:
+        tk.destroy()
+def main():
+    tk = Tk()
+    tk.title("Bouncing Ball Game for Prince")
+    tk.resizable(0, 0)
+    tk.wm_attributes("-topmost", 1)
+    canvas = Canvas(tk, width=500, height=400, bd=0, highlightthickness=0)
+    canvas.pack()
     tk.update()
-    time.sleep(0.01)
+
+    paddle = Paddle(canvas, 'cyan')
+    ball = Ball(canvas, paddle, 'red', 'red')
+    global score_now
+    score_now = canvas.create_text(430, 20, text="Your score: " + str(score), fill = "red", font=("Arial", 14))
+
+    while 1:          
+        if ball.hit_bottom == False:
+            ball.draw()
+            paddle.draw()
+            # ball.draw_score()
+        tk.update_idletasks()
+        tk.update()
+        time.sleep(0.01)
+
+main()
+
+
+# if __name__ == '__main__':
+#     main()
 
