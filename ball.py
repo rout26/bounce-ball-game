@@ -1,11 +1,13 @@
-# from tkinter import *
+from tkinter import *
 import random
 import time
 import keyboard
-from tkinter import *
-from paddle import *
+from tkinter import messagebox
+import score
+
 
 class Ball:
+    
     def __init__(self, canvas, paddle, color, outline_color):
         self.canvas = canvas
         self.paddle = paddle
@@ -33,19 +35,16 @@ class Ball:
     def draw(self):
         self.canvas.move(self.id, self.x, self.y)
         pos = self.canvas.coords(self.id)
-        # prin t(pos)
+        # print(pos)
         if pos[1] <= 0:
             self.y = 3
         if pos[3] >= self.canvas_height:
             # Ball dont bounce if hit the bottom
-            # self.y = -3
-            # exitmenu()
             self.hit_bottom = True
         if self.hit_paddle(pos) == True:               
-            # global score    ##Check score keeping
-            # score = score + 1 
-            # print(score)
             self.y = -4
+            score.count = score.count + 1
+            print(score.count)
         if pos[0] <= 0:
             self.x = 3
         if pos[2] >= self.canvas_width:

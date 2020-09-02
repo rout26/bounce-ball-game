@@ -5,11 +5,7 @@ import keyboard
 from tkinter import messagebox
 from ball import *
 from paddle import *
-
-score = 0
-tk = None
-score_now = 1
-canvas = None
+import score
 
 tk = Tk()
 tk.title("Bounce the Ball..")
@@ -21,15 +17,29 @@ tk.update()
 
 paddle = Paddle(canvas, 'cyan')
 ball = Ball(canvas, paddle, 'red', 'red')
-# global score_now
-score_now = canvas.create_text(430, 20, text="Your score: " + str(score), fill = "red", font=("Arial", 14))
+
+def print_score():
+    # global count
+    canvas.itemconfig(score_board_id, text="Your score: " + str(score.count))
+
+def game_over():
+    canvas.itemconfig(game_over_id, text="Game over!")
+
+
+score_board_id = canvas.create_text(430, 20, text="Your score: " + str(score.count), fill = "red", font=("Arial", 14))
+game_over_id = canvas.create_text(250, 150, text=" ", fill="red", font=("Arial", 40))
 
 while 1:          
     if ball.hit_bottom == False:
         ball.draw()
         paddle.draw()
-        canvas.itemconfig(score_now, text="Your score: " + str(score))
+        print_score()              
+    else:
+        game_over()
     tk.update_idletasks()
     tk.update()
     time.sleep(0.01)
+
+# if __name__=="__main__":
+#     main()
 
