@@ -17,7 +17,7 @@ def main():
     tk.update()
 
     paddle = Paddle(canvas, 'cyan')
-    ball = Ball(canvas, paddle, 'red', 'red')
+    # ball = Ball(canvas, paddle, 'red', 'red')
 
     def print_score():
         # global count
@@ -25,16 +25,21 @@ def main():
 
     def game_over():
         canvas.itemconfig(game_over_id, text="GAME OVER!!!", font=("Helvatika", 40))
-
+        canvas.itemconfig(restart_msg_id, text="Press 'Up Arrow Key' to restart...")
+        # ball.hit_bottom = True
+        # canvas.bind_all("<KeyPress-Up>", start_game) 
+        # tk.mainloop()
 
     score_board_id = canvas.create_text(430, 20, text="Your score: " + str(score.count), fill = "red", font=("Arial", 14))
-    game_over_id = canvas.create_text(250, 150, text="Press 'Up Arrow Key' to Start... ", fill="red", font=("Helvatika", 16))
-
+    game_over_id = canvas.create_text(250, 150, text="Press 'Up Arrow Key' to Start... ", fill="blue", font=("Helvatika", 16))
+    restart_msg_id = canvas.create_text(250, 200, text=" ", fill="blue", font=("Helvatika", 16))
     def start_game(event):
         if(event.keysym == 'Up'):
             score.count = 0
-            print_score()
+            print_score()  
+            ball = Ball(canvas, paddle, 'red', 'red')
             canvas.itemconfig(game_over_id, text=" ")
+            canvas.itemconfig(restart_msg_id, text=" ")
             while 1:          
                 if ball.hit_bottom == False:
                     ball.draw()
@@ -50,7 +55,6 @@ def main():
     canvas.bind_all("<KeyPress-Up>", start_game) 
 
     tk.mainloop()
-
 
 
 if __name__=="__main__":
