@@ -3,7 +3,7 @@ import random
 import time
 import keyboard
 from tkinter import messagebox
-import score
+import config
 
 
 class Ball:
@@ -43,8 +43,8 @@ class Ball:
             self.hit_bottom = True
         if self.hit_paddle(pos) == True:               
             self.y = -4
-            score.count = score.count + 1
-            print(score.count)
+            config.count = config.count + 1
+            print(config.count)
         if pos[0] <= 0:
             self.x = 3
         if pos[2] >= self.canvas_width:
